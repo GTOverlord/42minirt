@@ -44,15 +44,41 @@ typedef struct	s_ray
 	double			tork;
 }				t_ray;
 
+typedef struct	s_col
+{
+	unsigned int	r;
+	unsigned int	g;
+	unsigned int	b;
+}				t_col;
+
 typedef struct	s_light
 {
-	t_vec			loc;
-	unsigned int	col;
+	struct s_light			*next;
+	t_vec					loc;
+	t_col					col;
+	float					bright;
+	int						id;
 }				t_light;
+
+typedef struct	s_object
+{
+	struct s_object		*next;
+	int					id;
+	int					shape;
+	t_col				col;
+	t_vec				v1;
+	t_vec				v2;
+	t_vec				v3;
+	double				d1;
+	double				d2;
+}				t_object;
 
 typedef struct	s_data
 {
 	t_sphere	*spheres;
+	t_object	*objects;
+	t_col		ambient_col;
+	float		ambient_bright;
 	t_light		*lights;
 	t_ray		camera;
 	t_window	window;
@@ -64,7 +90,6 @@ typedef struct	s_data
 }				t_data;
 
 
-void			ft_get_img(t_ray camera, t_sphere *objects, t_img *img);
 void			ft_put_pixel(t_img *img, int x, int y, unsigned int color);
 int				ft_exit_esc(int key, t_window *win);
 t_img   		ray_gun(t_data data);
@@ -74,11 +99,22 @@ t_vec			get_vector(t_vec loc1, t_vec loc2);
 t_vec			subs_vec(t_vec v1, t_vec v2);
 t_vec			add_vec(t_vec v1, t_vec v2);
 double			dot(t_vec v1, t_vec v2);
-double			sphere_dist(t_sphere sphere, t_ray ray);
+double			sphere_dist(t_object sphere, t_ray ray);
 t_data			parcer(void);
 void			print_data(t_data data);
-void			add_sphere(t_sphere sphere, t_sphere *list);
-t_sphere		search_list(int	id, t_sphere *list);
+void			add_object(t_object object, t_object *list);
+t_object		search_list(int	id, t_object *list);
 t_vec			normalize_vector(t_vec vector);
+t_vec			mult_vec(t_vec v, double scalar);
+t_col			get_color_tcol(unsigned int color);
+unsigned int	get_color_uns_int(t_col color);
+void			add_light(t_light light, t_light *list);
+double			get_dist_vec(t_vec v);
+void			display_vec(t_vec v);
+void			display_ray(t_ray ray);
+void			display_col(t_col col);
+t_col 		   	get_color(t_data data, t_ray ray);
+double			plane_dist(t_object plane, t_ray ray);
+t_vec			get_normal_sphere(t_object sphere, t_vec loc);
 
 #endif

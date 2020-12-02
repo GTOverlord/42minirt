@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME = libminirt.a
-SRC = image_utils ray_gun math sphere parcer linked_list
+SRC = image_utils ray_gun math sphere plane parcer linked_list visual_utils utils get_color
 SRCC = $(SRC:%=%.c)
 SRCO = $(SRC:%=%.o)
 GNLSRC = get_next_line_utils get_next_line
@@ -44,3 +44,4 @@ re: fclean all
 cr: all
 	gcc main.c $(FLAGS) $(MLXFLAGS) $(NAME)
 	./a.out
+	/bin/rm -f $(SRCO)
