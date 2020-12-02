@@ -14,7 +14,7 @@
 #include <math.h>
 
 
-double		sphere_dist(t_sphere sphere, t_ray ray)
+double		sphere_dist(t_object sphere, t_ray ray)
 {
 	double	a;
 	double	b;
@@ -24,8 +24,8 @@ double		sphere_dist(t_sphere sphere, t_ray ray)
 	double	result2;
 
 	a = dot(ray.dir, ray.dir);
-	b = 2 * dot(ray.dir, subs_vec(ray.loc, sphere.loc));
-	c = dot(subs_vec(ray.loc, sphere.loc), subs_vec(ray.loc, sphere.loc)) - pow(sphere.radius, 2);
+	b = 2 * dot(ray.dir, subs_vec(ray.loc, sphere.v1));
+	c = dot(subs_vec(ray.loc, sphere.v1), subs_vec(ray.loc, sphere.v1)) - pow(sphere.d1, 2);
 	dis = pow(b, 2) - 4 * a * c;
 	if (dis < 0)
 		return (0);
@@ -36,4 +36,9 @@ double		sphere_dist(t_sphere sphere, t_ray ray)
 	else if (result2 > 0)
 		return (result2);
 	return (0);
+}
+
+t_vec	get_normal_sphere(t_object sphere, t_vec loc)
+{
+	return (get_vector(sphere.v1, loc));
 }

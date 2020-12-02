@@ -49,14 +49,30 @@ t_vec		subs_vec(t_vec v1, t_vec v2)
 t_vec		add_vec(t_vec v1, t_vec v2)
 {
 	t_vec	result;
-
 	result.x = v1.x + v2.x;
 	result.y = v1.y + v2.y;
 	result.z = v1.z + v2.z;
 	return (result);
+
+}
+
+t_vec		mult_vec(t_vec v, double scalar)
+{
+	t_vec	result;
+
+	result.x = v.x * scalar;
+	result.y = v.y * scalar;
+	result.z = v.z * scalar;
+	return (result);
+
 }
 
 double		dot(t_vec v1, t_vec v2)
 {
 	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
+}
+
+double		get_dist_vec(t_vec v)
+{
+	return (pow(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2), 0.5));
 }

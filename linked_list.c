@@ -15,31 +15,48 @@
 #include <stdio.h>
 
 
-t_sphere	*create_sphere(t_sphere sphere)
+t_object	*create_object(t_object object)
 {
-	t_sphere	*new;
+	t_object	*new;
 
-	new = malloc(sizeof(t_sphere));
-	*new = sphere;
+	new = malloc(sizeof(t_object));
+	*new = object;
 	return (new);
 }
 
-void		add_sphere(t_sphere sphere, t_sphere *list)
+t_light	*create_light(t_light light)
 {
-	t_sphere	*temp;
+	t_light	*new;
 
-	temp = list;
+	new = malloc(sizeof(t_light));
+	*new = light;
+	return (new);
+}
+
+void		add_object(t_object object, t_object *list)
+{
+	while (list->next)
+		list = list->next;
+	list->next = create_object(object);
+	list->next->next = 0;
+	list->next->id = list->id + 1;
+}
+
+void		add_light(t_light light, t_light *list)
+{
+	t_light	*temp;
+
 	while (list)
 	{
 		temp = list;
 		list = list->next;
 	}
-	temp->next = create_sphere(sphere);
+	temp->next = create_light(light);
 	temp->next->next = 0;
 	temp->next->id = temp->id + 1;
 }
 
-t_sphere	search_list(int	id, t_sphere *list)
+t_object	search_list(int	id, t_object *list)
 {
 	while (list)
 	{
@@ -47,5 +64,5 @@ t_sphere	search_list(int	id, t_sphere *list)
 			return (*list);
 		list = list->next;
 	}
-	return ((t_sphere){0});
+	return ((t_object){0});
 }

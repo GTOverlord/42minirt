@@ -94,18 +94,16 @@ t_vec	atov(char *s, int *i)
 	return (result);
 }
 
-unsigned int	atoc(char *s, int *i)
+t_col	atoc(char *s, int *i)
 {
-	int red;
-	int green;
-	int blue;
-	t_vec temp;
+	t_col	result;
+	t_vec	temp;
 
 	temp = atov(s, i);
-	red = (unsigned int)temp.x;
-	green = (unsigned int)temp.y;
-	blue = (unsigned int)temp.z;
-	return (red * 256 * 256 + green * 256 + blue);
+	result.r = (unsigned int)temp.x;
+	result.g = (unsigned int)temp.y;
+	result.b = (unsigned int)temp.z;
+	return (result);
 }
 
 t_data	parce_r(t_data data, char *line)
@@ -151,22 +149,72 @@ t_data	parce_c(t_data data, char *line)
 void	parce_sp(t_data data, char *line)
 {
 	int			i;
-	t_sphere	sphere;
+	t_object	sphere;
 
 	i = 0;
 	while (!is_number(line[i]) && line[i] != '-'&& line[i] != '.')
 		i++;
-	sphere.loc = atov(line, &i);
+	sphere.v1 = atov(line, &i);
 	while (!is_number(line[i]) && line[i] != '-'&& line[i] != '.')
 		i++;
-	sphere.radius = ft_atod(line, &i);
+	sphere.d1 = ft_atod(line, &i);
 	while (!is_number(line[i]) && line[i] != '-'&& line[i] != '.')
-	{
-//		printf("dafuq? %s\n", line);
 		i++;
-	}
 	sphere.col = atoc(line, &i);
-	add_sphere(sphere, data.spheres);
+	sphere.shape = 0;
+	add_object(sphere, data.objects);
+}
+
+void	parce_pl(t_data data, char *line)
+{
+	int			i;
+	t_object	plane;
+
+	i = 0;
+	while (!is_number(line[i]) && line[i] != '-'&& line[i] != '.')
+		i++;
+	plane.v1 = atov(line, &i);
+	while (!is_number(line[i]) && line[i] != '-'&& line[i] != '.')
+		i++;
+	plane.v2 = atov(line, &i);
+	plane.v2 = normalize_vector(plane.v2);
+	while (!is_number(line[i]) && line[i] != '-'&& line[i] != '.')
+		i++;
+	plane.col = atoc(line, &i);
+	plane.shape = 1;
+	add_object(plane, data.objects);
+}
+
+void	parce_l(t_data data, char *line)
+{
+	int			i;
+	t_light		light;
+
+	i = 0;
+	while (!is_number(line[i]) && line[i] != '-'&& line[i] != '.')
+		i++;
+	light.loc = atov(line, &i);
+	while (!is_number(line[i]) && line[i] != '-'&& line[i] != '.')
+		i++;
+	light.bright = ft_atod(line, &i);
+	while (!is_number(line[i]) && line[i] != '-'&& line[i] != '.')
+		i++;
+	light.col = atoc(line, &i);
+	add_light(light, data.lights);
+}
+
+t_data	parce_a(t_data data, char *line)
+{
+	int		i;
+
+	i = 0;
+	while (!is_number(line[i]) && line[i] != '-'&& line[i] != '.')
+		i++;
+	data.ambient_bright = ft_atod(line, &i);
+	while (!is_number(line[i]) && line[i] != '-'&& line[i] != '.')
+		i++;
+	data.ambient_col = atoc(line, &i);
+	return (data);
 }
 
 t_data	parce_line(t_data data, char *line)
@@ -177,6 +225,12 @@ t_data	parce_line(t_data data, char *line)
 		data = parce_c(data, line);
 	if (line[0] == 's' && line[1] == 'p')
 		parce_sp(data, line);
+	if (line[0] == 'p' && line[1] == 'l')
+		parce_pl(data, line);
+	if (line[0] == 'l')
+		parce_l(data, line);
+	if (line[0] == 'A')
+		data = parce_a(data, line);
 	return (data);
 }
 
@@ -187,8 +241,10 @@ t_data	parcer(void)
 	char	**line;
 
 	data = (t_data){0};
-	data.spheres = malloc(sizeof(t_sphere));
-	*(data.spheres) = (t_sphere){0};
+	data.objects = malloc(sizeof(t_object));
+	*(data.objects) = (t_object){0};
+	data.lights = malloc(sizeof(t_light));
+	*(data.lights) = (t_light){0};
 	fd = open("test.rt", O_RDONLY);
 	line = malloc(sizeof(char *));
 	while (get_next_line(fd, line))

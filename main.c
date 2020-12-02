@@ -15,12 +15,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <time.h>
 
 int main(void)
 {
     t_data  	data;
+	t_object	plane;
+	t_ray		ray;
 
+	srand((unsigned int)(time(0)));
+	plane.v1 = (t_vec){10, -3, -4};
+	plane.v2 = (t_vec){0.01, 0.2, 0.64};
+	plane.v2 = normalize_vector(plane.v2);
+	ray.loc = (t_vec){-10, 0, 0};
+	ray.dir = (t_vec){0, -1, -1};
+	ray.dir = normalize_vector(ray.dir);
 	data = parcer();
+	plane = *data.objects;
+	while (plane.shape != 1)
+		plane = *plane.next;
+	display_vec(plane.v2);
 	data.fov_y = data.fov_x * ((double)data.y / (double)data.x);
     data.window.mlx = mlx_init();
     data.window.mlx_win = mlx_new_window(data.window.mlx, data.x, data.y, "sukkel");
