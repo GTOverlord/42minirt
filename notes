@@ -1,7 +1,35 @@
-minilibx mastery: DONE
-ray sending: DONE
-ray collision: DONE
-coloring: 
-rotation: 
-finishing up: 
-debugging: 
+ray.loc + ray.dir * a = plane.loc + plane.v1 * b + plane.v2 * c
+
+x:
+
+plane.v1 = {0, plane.norm.y, -plane.norm.z}
+
+ray.loc.y + ray.dir.y * a = plane.loc.y + plane.v1.y * b
+
+(ray.loc.y - plane.loc.y) + ray.dir.y * a - plane.v1.y * b = 0;
+(ray.loc.z - plane.loc.z) + ray.dir.z * a - plane.v1.z * b = 0;
+
+y[0] + y[1] * a + y[2] * b = 0;
+z[0] + z[1] * a + z[2] * b = 0;
+
+P = y[1] / x[1];
+
+y[0] - P * x[0] + (y[2] - P * x[2]) * b = 0;
+b = (P * y[0] - z[0]) / (z[2] - P * y[2])
+
+5 + 4x + 2y = 0
+3 - x + 9y = 0
+
+4.25 + 9.5y = 0
+
+y = 17/4 / 19/2 = 17/38
+
+v1, v2, v3;
+point p;
+v2-1;
+point p = v1 + x * v2-1;
+v3-p * v2-1 = 0;
+
+return (v3-p)
+
+(v1.x + v2_1.x * l - v3.x) * v2_1.x + (v1.y + v2_1.y * l - v3.y) * v2_1.y + (v1.z + v2_1.z * l - v3.z) * v2_1.z

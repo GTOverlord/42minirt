@@ -6,7 +6,7 @@
 /*   By: hsillem <hsillem@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/13 13:03:56 by hsillem       #+#    #+#                 */
-/*   Updated: 2020/07/05 18:31:40 by hsillem       ########   odam.nl         */
+/*   Updated: 2020/12/06 15:10:36 by hsillem       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,18 @@
 int main(void)
 {
     t_data  	data;
-	t_object	plane;
-	t_ray		ray;
+    float         x[3];
+    float         y[3];
 
+    x[0] = 5;
+    x[1] = 4;
+    x[2] = 2;
+    y[0] = 3;
+    y[1] = -1;
+    y[2] = 9;
+    printf("result: %f - correct: %f\n", solve_dist2(x, y), (float)17 / 38);
 	srand((unsigned int)(time(0)));
-	plane.v1 = (t_vec){10, -3, -4};
-	plane.v2 = (t_vec){0.01, 0.2, 0.64};
-	plane.v2 = normalize_vector(plane.v2);
-	ray.loc = (t_vec){-10, 0, 0};
-	ray.dir = (t_vec){0, -1, -1};
-	ray.dir = normalize_vector(ray.dir);
 	data = parcer();
-	plane = *data.objects;
-	while (plane.shape != 1)
-		plane = *plane.next;
-	display_vec(plane.v2);
 	data.fov_y = data.fov_x * ((double)data.y / (double)data.x);
     data.window.mlx = mlx_init();
     data.window.mlx_win = mlx_new_window(data.window.mlx, data.x, data.y, "sukkel");

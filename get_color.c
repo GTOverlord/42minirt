@@ -106,12 +106,30 @@ t_vec			get_normal(t_object object, t_vec loc)
 
 float		absolute(float x)
 {
-	if (rand() % 100000 == 0)
-		printf("%f\n", x);
 	if (x < 0)
 		return (-1 * x);
 	else
 		return (x);
+}
+
+int			correct_side(t_object object, t_vec loc, t_light light, t_ray cam_ray)
+{
+	if (object.shape == 0)
+	{
+		if (dot(get_vector(loc, object.v1), get_vector(loc, light.loc)) < 0)
+			return (1);
+		else
+			return (0);
+	}
+	if (object.shape == 1)
+	{
+		cam_ray.loc = light.loc;
+		if (plane_dist(object, cam_ray) > 0)
+			return (1);
+		else
+			return (0);
+	}
+	return (1);
 }
 
 t_col    	get_color(t_data data, t_ray ray)
@@ -123,7 +141,7 @@ t_col    	get_color(t_data data, t_ray ray)
 	t_col			col;
 
 	id = closest_object(data, ray);
-	loc = add_vec(data.camera.loc, mult_vec(ray.dir, sphere_dist(search_list(id, data.objects), ray)));
+	loc = add_vec(data.camera.loc, mult_vec(ray.dir, get_dist(search_list(id, data.objects), ray)));
 	object = search_list(id, data.objects);
 	col = mult_col(object.col, data.ambient_col, data.ambient_bright);
 	if (id)
@@ -131,7 +149,7 @@ t_col    	get_color(t_data data, t_ray ray)
 		while (data.lights->next)
 		{
 			data.lights = data.lights->next;
-			if (dot(get_vector(loc, object.v1), get_vector(loc, data.lights->loc)) < 0 || object.shape != 0)
+			if (correct_side(object, loc, *data.lights, ray))
 			{
 				dist = direct_path(data, loc, data.lights->loc, id);
 				if (dist)

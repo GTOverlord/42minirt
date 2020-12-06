@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 
-double		solve_dist(float *x, float *y, float *z)
+double		solve_dist3(float *x, float *y, float *z)
 {
 	double	P;
 	double	Q;
@@ -61,22 +61,81 @@ double		plane_dist_def(t_object plane, t_ray ray)
 	z[1] = v1.z;
 	z[2] = v2.z;
 	z[3] = ray.dir.z;
-	return (solve_dist(x, y, z));
+	return (solve_dist3(x, y, z));
+}
+
+double		solve_dist2(float *x, float *y)
+{
+	double	P;
+
+	P = y[1]/x[1];
+	return (-1 * (P * x[0] - y[0]) / (y[2] - P * x[2]));
+}
+
+double		plane_dist_x0(t_object plane, t_ray ray)
+{
+	t_vec		v1;
+	float		y[3];
+	float		z[3];
+
+	v1 = (t_vec){0, plane.v2.y, -1 * plane.v2.z};
+
+	y[0] = plane.v1.x - ray.loc.x;
+	y[1] = v1.y;
+	y[2] = ray.dir.x;
+	z[0] = plane.v1.y - ray.loc.y;
+	z[1] = v1.z;
+	z[2] = ray.dir.y;
+	return (solve_dist2(y, z));
+}
+
+double		plane_dist_y0(t_object plane, t_ray ray)
+{
+	t_vec		v1;
+	float		x[3];
+	float		z[3];
+
+	v1 = (t_vec){plane.v2.x, 0, -1 * plane.v2.z};
+
+	x[0] = plane.v1.x - ray.loc.x;
+	x[1] = v1.x;
+	x[2] = ray.dir.x;
+	z[0] = plane.v1.z - ray.loc.z;
+	z[1] = v1.z;
+	z[2] = ray.dir.z;
+	return (solve_dist2(x, z));
+}
+
+double		plane_dist_z0(t_object plane, t_ray ray)
+{
+	t_vec		v1;
+	float		x[3];
+	float		y[3];
+
+	v1 = (t_vec){plane.v2.y, -1 * plane.v2.x, 0};
+
+	x[0] = plane.v1.x - ray.loc.x;
+	x[1] = v1.x;
+	x[2] = ray.dir.x;
+	y[0] = plane.v1.y - ray.loc.y;
+	y[1] = v1.y;
+	y[2] = ray.dir.y;
+	return (solve_dist2(x, y));
 }
 
 double		plane_dist(t_object plane, t_ray ray)
 {
-//	t_vec	v1;
-//	t_vec	v2;
-//	int		x[3];
-//	int		y[3];
-//	int		z[3];
-
 	if (plane.v2.x == 1)
 		return ((plane.v1.x - ray.loc.x) / ray.dir.x);
 	if (plane.v2.y == 1)
 		return ((plane.v1.y - ray.loc.y) / ray.dir.y);
 	if (plane.v2.z == 1)
 		return ((plane.v1.z - ray.loc.z) / ray.dir.z);
+	if (plane.v2.x == 0)
+		return (plane_dist_x0(plane, ray));
+	if (plane.v2.y == 0)
+		return (plane_dist_y0(plane, ray));
+	if (plane.v2.z == 0)
+		return (plane_dist_z0(plane, ray));
 	return (plane_dist_def(plane, ray));
 }

@@ -116,5 +116,8 @@ void			display_col(t_col col);
 t_col 		   	get_color(t_data data, t_ray ray);
 double			plane_dist(t_object plane, t_ray ray);
 t_vec			get_normal_sphere(t_object sphere, t_vec loc);
+double			solve_dist2(float *x, float *y);
+t_vec			get_v1(t_vec normal);
+t_vec			get_v2(t_vec normal);
 
 #endif
