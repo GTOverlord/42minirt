@@ -10,6 +10,8 @@ float		get_dist(t_object object, t_ray ray)
 		return (sphere_dist(object, ray));
 	if (object.shape == 1)
 		return (plane_dist(object, ray));
+	if (object.shape == 2)
+		return (triangle_dist(object, ray));
 	return (sphere_dist(object, ray));
 }
 
@@ -99,8 +101,8 @@ t_vec			get_normal(t_object object, t_vec loc)
 {
 	if (object.shape == 0)
 		return (get_normal_sphere(object, loc));
-	if (object.shape == 1)
-		return (object.v2);
+	else
+		return (object.normal);
 	return ((t_vec){0, 0, 1});
 }
 
@@ -121,7 +123,7 @@ int			correct_side(t_object object, t_vec loc, t_light light, t_ray cam_ray)
 		else
 			return (0);
 	}
-	if (object.shape == 1)
+	else
 	{
 		cam_ray.loc = light.loc;
 		if (plane_dist(object, cam_ray) > 0)

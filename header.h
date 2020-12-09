@@ -41,7 +41,6 @@ typedef struct	s_ray
 {
 	t_vec			loc;
 	t_vec			dir;
-	double			tork;
 }				t_ray;
 
 typedef struct	s_col
@@ -69,6 +68,7 @@ typedef struct	s_object
 	t_vec				v1;
 	t_vec				v2;
 	t_vec				v3;
+	t_vec				normal;
 	double				d1;
 	double				d2;
 }				t_object;
@@ -119,5 +119,8 @@ t_vec			get_normal_sphere(t_object sphere, t_vec loc);
 double			solve_dist2(float *x, float *y);
 t_vec			get_v1(t_vec normal);
 t_vec			get_v2(t_vec normal);
+t_vec   	    get_normal_triangle(t_object triangle);
+double			triangle_dist(t_object triangle, t_ray ray);
+void			display_object(t_object object);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: hsillem <hsillem@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/24 15:47:57 by hsillem       #+#    #+#                 */
-/*   Updated: 2020/07/05 17:20:42 by hsillem       ########   odam.nl         */
+/*   Updated: 2020/12/09 16:15:42 by hsillem       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,13 +176,37 @@ void	parce_pl(t_data data, char *line)
 	plane.v1 = atov(line, &i);
 	while (!is_number(line[i]) && line[i] != '-'&& line[i] != '.')
 		i++;
-	plane.v2 = atov(line, &i);
-	plane.v2 = normalize_vector(plane.v2);
+	plane.normal = atov(line, &i);
+	plane.normal = normalize_vector(plane.normal);
 	while (!is_number(line[i]) && line[i] != '-'&& line[i] != '.')
 		i++;
 	plane.col = atoc(line, &i);
 	plane.shape = 1;
 	add_object(plane, data.objects);
+}
+
+void	parce_tr(t_data data, char *line)
+{
+	int			i;
+	t_object	triangle;
+
+	i = 0;
+	while (!is_number(line[i]) && line[i] != '-'&& line[i] != '.')
+		i++;
+	triangle.v1 = atov(line, &i);
+	while (!is_number(line[i]) && line[i] != '-'&& line[i] != '.')
+		i++;
+	triangle.v2 = atov(line, &i);
+	while (!is_number(line[i]) && line[i] != '-'&& line[i] != '.')
+		i++;
+	triangle.v3 = atov(line, &i);
+	triangle.normal = get_normal_triangle(triangle);
+	triangle.normal = normalize_vector(triangle.normal);
+	while (!is_number(line[i]) && line[i] != '-'&& line[i] != '.')
+		i++;
+	triangle.col = atoc(line, &i);
+	triangle.shape = 2;
+	add_object(triangle, data.objects);
 }
 
 void	parce_l(t_data data, char *line)
@@ -227,6 +251,8 @@ t_data	parce_line(t_data data, char *line)
 		parce_sp(data, line);
 	if (line[0] == 'p' && line[1] == 'l')
 		parce_pl(data, line);
+	if (line[0] == 't' && line[1] == 'r')
+		parce_tr(data, line);
 	if (line[0] == 'l')
 		parce_l(data, line);
 	if (line[0] == 'A')

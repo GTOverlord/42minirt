@@ -46,8 +46,8 @@ double		plane_dist_def(t_object plane, t_ray ray)
 	float		y[4];
 	float		z[4];
 
-	v1 = get_v1(plane.v2);
-	v2 = get_v2(plane.v2);
+	v1 = get_v1(plane.normal);
+	v2 = get_v2(plane.normal);
 
 	x[0] = plane.v1.x - ray.loc.x;
 	x[1] = v1.x;
@@ -78,7 +78,7 @@ double		plane_dist_x0(t_object plane, t_ray ray)
 	float		y[3];
 	float		z[3];
 
-	v1 = (t_vec){0, plane.v2.y, -1 * plane.v2.z};
+	v1 = (t_vec){0, plane.normal.y, -1 * plane.normal.z};
 
 	y[0] = plane.v1.x - ray.loc.x;
 	y[1] = v1.y;
@@ -95,7 +95,7 @@ double		plane_dist_y0(t_object plane, t_ray ray)
 	float		x[3];
 	float		z[3];
 
-	v1 = (t_vec){plane.v2.x, 0, -1 * plane.v2.z};
+	v1 = (t_vec){plane.normal.x, 0, -1 * plane.normal.z};
 
 	x[0] = plane.v1.x - ray.loc.x;
 	x[1] = v1.x;
@@ -112,7 +112,7 @@ double		plane_dist_z0(t_object plane, t_ray ray)
 	float		x[3];
 	float		y[3];
 
-	v1 = (t_vec){plane.v2.y, -1 * plane.v2.x, 0};
+	v1 = (t_vec){plane.normal.y, -1 * plane.normal.x, 0};
 
 	x[0] = plane.v1.x - ray.loc.x;
 	x[1] = v1.x;
@@ -125,17 +125,17 @@ double		plane_dist_z0(t_object plane, t_ray ray)
 
 double		plane_dist(t_object plane, t_ray ray)
 {
-	if (plane.v2.x == 1)
+	if (plane.normal.x == 1)
 		return ((plane.v1.x - ray.loc.x) / ray.dir.x);
-	if (plane.v2.y == 1)
+	if (plane.normal.y == 1)
 		return ((plane.v1.y - ray.loc.y) / ray.dir.y);
-	if (plane.v2.z == 1)
+	if (plane.normal.z == 1)
 		return ((plane.v1.z - ray.loc.z) / ray.dir.z);
-	if (plane.v2.x == 0)
+	if (plane.normal.x == 0)
 		return (plane_dist_x0(plane, ray));
-	if (plane.v2.y == 0)
+	if (plane.normal.y == 0)
 		return (plane_dist_y0(plane, ray));
-	if (plane.v2.z == 0)
+	if (plane.normal.z == 0)
 		return (plane_dist_z0(plane, ray));
 	return (plane_dist_def(plane, ray));
 }

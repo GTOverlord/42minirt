@@ -24,3 +24,13 @@ void	display_col(t_col col)
 {
 	printf("g: %i, r: %i, b: %i\n", col.g, col.r, col.b);
 }
+
+void	display_object(t_object object)
+{
+	printf("\nid: %i	shape: %i\n", object.id, object.shape);
+	display_vec(object.v1);
+	display_vec(object.v2);
+	display_vec(object.v3);
+	printf("normal:");
+	display_vec(object.normal);
+}

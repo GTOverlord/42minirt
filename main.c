@@ -6,7 +6,7 @@
 /*   By: hsillem <hsillem@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/13 13:03:56 by hsillem       #+#    #+#                 */
-/*   Updated: 2020/12/06 15:10:36 by hsillem       ########   odam.nl         */
+/*   Updated: 2020/12/09 20:18:27 by hsillem       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,7 @@
 int main(void)
 {
     t_data  	data;
-    float         x[3];
-    float         y[3];
 
-    x[0] = 5;
-    x[1] = 4;
-    x[2] = 2;
-    y[0] = 3;
-    y[1] = -1;
-    y[2] = 9;
-    printf("result: %f - correct: %f\n", solve_dist2(x, y), (float)17 / 38);
 	srand((unsigned int)(time(0)));
 	data = parcer();
 	data.fov_y = data.fov_x * ((double)data.y / (double)data.x);
