@@ -6,39 +6,78 @@
 /*   By: hsillem <hsillem@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/12/05 12:43:15 by hsillem       #+#    #+#                 */
-/*   Updated: 2020/12/09 20:29:11 by hsillem       ########   odam.nl         */
+/*   Updated: 2020/12/12 11:56:25 by hsillem       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 #include <math.h>
+#include <stdio.h>
 
-int			in_between_def(t_vec dir, t_vec v1, t_vec v2, t_vec p)
+t_vec		get_corner_1(t_object *square)		//upper left
 {
-	t_vec	p1;
-	t_vec	p2;
+	float	horizontal;
+	t_vec 	result;
 
-	p1 = add_vec(v1, mult_vec(dir, (p.x - v1.x) / dir.x));
-	p2 = add_vec(v2, mult_vec(dir, (p.x - v2.x) / dir.x));
-	if ((p1.y < p.y && p2.y > p.y) || (p1.y > p.y && p2.y < p.y))
-		return (1);
-	return (0);
+	horizontal = pow(pow(square->normal.x, 2) + pow(square->normal.z, 2), 0.5);
+	result.x = -1 * square->d1 * square->normal.z / horizontal - -1 * square->d1 * square->normal.y * square->normal.x / horizontal;
+	result.y = -1 * square->d1 * horizontal;
+	result.z = square->d1 * square->normal.x / horizontal - -1 * square->d1 * square->normal.y * square->normal.z / horizontal;
+	return (result);
 }
 
-double		triangle_dist(t_object triangle, t_ray ray)
+t_vec		get_corner_2(t_object *square)		//upper right
+{
+	float	horizontal;
+	t_vec 	result;
+
+	horizontal = pow(pow(square->normal.x, 2) + pow(square->normal.z, 2), 0.5);
+	result.x = square->d1 * square->normal.z / horizontal - square->d1 * square->normal.y * square->normal.x / horizontal;
+	result.y = -1 * square->d1 * horizontal;
+	result.z = -1 * square->d1 * square->normal.x / horizontal - square->d1 * square->normal.y * square->normal.z / horizontal;
+	return (result);
+}
+
+t_vec		get_corner_3(t_object *square)		//lower right
+{
+	float	horizontal;
+	t_vec 	result;
+
+	horizontal = pow(pow(square->normal.x, 2) + pow(square->normal.z, 2), 0.5);
+	result.x = -1 * square->d1 * square->normal.z / horizontal - -1 * square->d1 * square->normal.y * square->normal.x / horizontal;
+	result.y = square->d1 * horizontal;
+	result.z = square->d1 * square->normal.x / horizontal - -1 * square->d1 * square->normal.y * square->normal.z / horizontal;
+	return (result);
+}
+
+t_vec		get_corner_4(t_object *square)		//lower left
+{
+	float	horizontal;
+	t_vec 	result;
+
+	horizontal = pow(pow(square->normal.x, 2) + pow(square->normal.z, 2), 0.5);
+	result.x = square->d1 * square->normal.z / horizontal - square->d1 * square->normal.y * square->normal.x / horizontal;
+	result.y = square->d1 * horizontal;
+	result.z = -1 * square->d1 * square->normal.x / horizontal - square->d1 * square->normal.y * square->normal.z / horizontal;
+	return (result);
+}
+
+void		get_corners(t_object *square, t_vec centre)
+{
+	square->v1 = add_vec(centre, get_corner_1(square));
+	square->v2 = add_vec(centre, get_corner_2(square));
+	square->v3 = add_vec(centre, get_corner_3(square));
+	square->v4 = add_vec(centre, get_corner_4(square));
+}
+
+double		square_dist(t_object *square, t_ray ray)
 {
 	float	dist;
 	t_vec	loc;
-	t_vec	v1;
-	t_vec	v2;
-	t_vec	v3;
 
-	dist = plane_dist(triangle, ray);
+	dist = plane_dist(*square, ray);
 	loc = add_vec(ray.loc, mult_vec(ray.dir, dist));
-	v1 = subs_vec(triangle.v2, triangle.v3);
-	v2 = subs_vec(triangle.v3, triangle.v1);
-	v3 = subs_vec(triangle.v1, triangle.v2);
-	if (in_between_def(v1, triangle.v1, triangle.v2, loc) && in_between_def(v2, triangle.v2, triangle.v3, loc) && in_between_def(v3, triangle.v3, triangle.v1, loc))
+	if (in_between_def(square->v2, square->v1, square->v4, loc) || in_between_def(square->v3, square->v1, square->v4, loc))
 		return (dist);
 	return (0);
 }

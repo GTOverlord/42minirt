@@ -68,6 +68,7 @@ typedef struct	s_object
 	t_vec				v1;
 	t_vec				v2;
 	t_vec				v3;
+	t_vec				v4;
 	t_vec				normal;
 	double				d1;
 	double				d2;
@@ -122,5 +123,8 @@ t_vec			get_v2(t_vec normal);
 t_vec   	    get_normal_triangle(t_object triangle);
 double			triangle_dist(t_object triangle, t_ray ray);
 void			display_object(t_object object);
+void			get_corners(t_object *square, t_vec centre);
+double			square_dist(t_object *square, t_ray ray);
+int				in_between_def(t_vec dir, t_vec v1, t_vec v2, t_vec p);
 
 #endif

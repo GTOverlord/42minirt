@@ -12,6 +12,8 @@ float		get_dist(t_object object, t_ray ray)
 		return (plane_dist(object, ray));
 	if (object.shape == 2)
 		return (triangle_dist(object, ray));
+	if (object.shape == 3)
+		return (square_dist(&object, ray));
 	return (sphere_dist(object, ray));
 }
 

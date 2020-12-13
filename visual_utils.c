@@ -28,9 +28,6 @@ void	display_col(t_col col)
 void	display_object(t_object object)
 {
 	printf("\nid: %i	shape: %i\n", object.id, object.shape);
-	display_vec(object.v1);
-	display_vec(object.v2);
-	display_vec(object.v3);
 	printf("normal:");
 	display_vec(object.normal);
 }

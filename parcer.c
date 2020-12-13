@@ -6,7 +6,7 @@
 /*   By: hsillem <hsillem@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/24 15:47:57 by hsillem       #+#    #+#                 */
-/*   Updated: 2020/12/09 16:15:42 by hsillem       ########   odam.nl         */
+/*   Updated: 2020/12/12 12:03:06 by hsillem       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,38 @@ void	parce_tr(t_data data, char *line)
 	add_object(triangle, data.objects);
 }
 
+void	parce_sq(t_data data, char *line)
+{
+	int			i;
+	t_vec		centre;
+	t_object	square;
+	t_object	triangle;
+
+	i = 0;
+	while (!is_number(line[i]) && line[i] != '-'&& line[i] != '.')
+		i++;
+	centre = atov(line, &i);
+	while (!is_number(line[i]) && line[i] != '-'&& line[i] != '.')
+		i++;
+	square.normal = atov(line, &i);
+	square.normal = normalize_vector(square.normal);
+	while (!is_number(line[i]) && line[i] != '-'&& line[i] != '.')
+		i++;
+	square.d1 = ft_atod(line, &i);
+	while (!is_number(line[i]) && line[i] != '-'&& line[i] != '.')
+		i++;
+	square.col = atoc(line, &i);
+	get_corners(&square, centre);
+	display_vec(square.v1);
+	display_vec(square.v2);
+	display_vec(square.v3);
+	display_vec(square.v4);
+	triangle = (t_object){(t_object *)0, 0, 2, square.col, square.v1, square.v2, square.v3, (t_vec){0}, square.normal, 0, 0};
+	add_object(triangle, data.objects);
+	triangle = (t_object){(t_object *)0, 0, 2, square.col, square.v4, square.v2, square.v3, (t_vec){0}, square.normal, 0, 0};
+	add_object(triangle, data.objects);
+}
+
 void	parce_l(t_data data, char *line)
 {
 	int			i;
@@ -253,6 +285,8 @@ t_data	parce_line(t_data data, char *line)
 		parce_pl(data, line);
 	if (line[0] == 't' && line[1] == 'r')
 		parce_tr(data, line);
+	if (line[0] == 's' && line[1] == 'q')
+		parce_sq(data, line);
 	if (line[0] == 'l')
 		parce_l(data, line);
 	if (line[0] == 'A')

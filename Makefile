@@ -6,12 +6,12 @@
 #    By: hsillem <hsillem@student.codam.nl>           +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/01 14:17:23 by hsillem       #+#    #+#                  #
-#    Updated: 2020/12/09 15:58:32 by hsillem       ########   odam.nl          #
+#    Updated: 2020/12/12 11:08:51 by hsillem       ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libminirt.a
-SRC = image_utils ray_gun math sphere plane triangle parcer linked_list visual_utils utils get_color
+SRC = image_utils ray_gun math sphere plane triangle square parcer linked_list visual_utils utils get_color
 SRCC = $(SRC:%=%.c)
 SRCO = $(SRC:%=%.o)
 GNLSRC = get_next_line_utils get_next_line
